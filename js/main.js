@@ -16,6 +16,8 @@ let cont = 0;
 let totalenProductos = 0;
 let costoTotal = 0;
 
+let datos = new Array();
+
 function validarCantidad(){
     if (txtNumber.value.length==0){
         return false;
@@ -70,6 +72,14 @@ btnAgregar.addEventListener("click", function(event){
                     <td>${precio}</td>
                 </tr>
         `;
+        let elemento = {
+            "cont" : cont,
+            "nombre" : txtName.value,
+            "cantidad" : txtNumber.value,
+            "precio" : precio
+        };
+        datos.push(elemento);
+        localStorage.setItem("datos", JSON.stringify(datos));
         cuerpoTabla.insertAdjacentHTML("beforeend", row);
         contadorProductos.innerText=cont;
         totalenProductos += Number(txtNumber.value);
@@ -78,6 +88,13 @@ btnAgregar.addEventListener("click", function(event){
         //costoTotal.toFixed(2); forma fácil
         precioTotal.innerText = new Intl.NumberFormat("es-MX", 
                     { style: "currency", currency: "MXN" }).format(costoTotal);
+        let resumen = {
+            "cont" : cont,
+            "totalenProductos" : totalenProductos,
+            "costoTotal" : costoTotal,
+        };
+        localStorage.setItem("resumen", JSON.stringify(resumen) );
+
         txtName.value ="";
         txtNumber.value ="";
         txtName.focus();
